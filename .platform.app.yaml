@@ -1,0 +1,68 @@
+name: app
+type: php:7.2
+build:
+  flavor: composer
+runtime:
+  extensions:
+      - gd
+      - intl
+      - mcrypt
+      - soap
+      - opcache
+      - zip
+relationships:
+    database: 'mysqldb:admin'
+web:
+  locations:
+    '/':
+      root: 'persistent/shopware'
+      passthru: '/shopware.php'
+      index:
+        - 'shopware.php'
+      allow: true
+      scripts: true
+disk: 2048
+mounts:
+  "persistent":
+    source: local
+    source_path: "persistent"
+hooks:
+  deploy: |
+    set -e
+
+    if [ ! -f /app/persistent/shopware/recovery/install/data/install.lock ]; then
+        curl http://releases.s3.shopware.com.s3.amazonaws.com/install_$SHOPWARE_VERSION.zip -s -S -o /app/persistent/shopware.zip
+        unzip -d /app/persistent/shopware-tmp /app/persistent/shopware.zip > /dev/null || exit 1
+        rm /app/persistent/shopware.zip
+        rsync --ignore-existing -r /app/persistent/shopware-tmp/ /app/persistent/shopware >/dev/null
+        rm -r /app/persistent/shopware-tmp
+
+        php /app/persistent/shopware/recovery/install/index.php --db-host="$DATABASE_HOST" --db-user="$DATABASE_USER" --db-password="$DATABASE_PASSWORD" --db-name="$DATABASE_DB" --admin-username="demo" --admin-password="demo" --admin-locale="$SHOP_LOCALE" --admin-name="Demo-Admin" --admin-email="$ADMIN_EMAIL" --shop-locale="$SHOP_LOCALE" --shop-host="$SERVER_DOMAIN" --shop-currency="EUR" --shop-name="$SHOP_NAME" -q -n
+
+        php /app/persistent/shopware/bin/console sw:firstrunwizard:disable
+    fi
+
+    if [ ! -z $PLUGIN_NAME ]; then
+        rsync -r --exclude 'persistent' /app/* /app/persistent/shopware/custom/plugins/${PLUGIN_NAME}
+    fi
+
+    if [ ! -z $PROJECT_ROOT ]; then
+        rsync -r /app/${PROJECT_ROOT}/* /app/persistent/shopware
+    fi
+
+    curl https://raw.githubusercontent.com/kellerkinderDE/K10rPlugin/master/kellerinder-plugin.php -s -S -o /app/persistent/kellerkinder-plugin.php
+    find /app/persistent/shopware/custom/plugins -type f -name kellerkinder-plugin.json -exec php /app/persistent/kellerkinder-plugin.php {} '/app/persistent/shopware/custom/plugins' \;
+
+    find /app/persistent/shopware/custom/plugins -maxdepth 2  -type f -name composer.json -execdir composer install \;
+
+    composer -d=/app/persistent/shopware require --no-ansi --no-interaction --update-no-dev --prefer-dist --quiet --optimize-autoloader k10r/deployment:~1.2.0
+    php /app/persistent/shopware/bin/console sw:plugin:refresh
+    php /app/persistent/shopware/bin/console sw:plugin:reinstall K10rDeployment
+
+    if [ $USE_DEMO -ne "0" ]; then
+        php /app/persistent/shopware/bin/console sw:store:download SwagDemoDataDE
+        php /app/persistent/shopware/bin/console sw:plugin:refresh
+        php /app/persistent/shopware/bin/console k10r:plugin:install --activate SwagDemoDataDE
+    fi
+
+    php /app/persistent/shopware/bin/console k10r:store:update --secure=1 --host="$SERVER_DOMAIN"

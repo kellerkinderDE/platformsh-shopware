@@ -1,0 +1,15 @@
+export SERVER_DOMAIN="$PLATFORM_ENVIRONMENT-$PLATFORM_PROJECT.eu-2.platformsh.site"
+export SHOPWARE_VERSION=5.4.6_f667f6471a77bb5af0c115f3e243594e6353747e
+export SHOP_LOCALE=de_DE
+export ADMIN_EMAIL=me@example.com
+export SHOP_NAME="My platform.sh Shopware"
+export USE_DEMO=1
+# Use the next line if you are testing a plugin
+#export PLUGIN_NAME="MyPlugin"
+# Use the next line if you are testing a shop with the Shopware root in "web/"
+#export PROJECT_ROOT="web"
+
+export DATABASE_HOST=$(php -r "echo json_decode(base64_decode(getenv('PLATFORM_RELATIONSHIPS')), true)['database'][0]['host'];")
+export DATABASE_USER=$(php -r "echo json_decode(base64_decode(getenv('PLATFORM_RELATIONSHIPS')), true)['database'][0]['username'];")
+export DATABASE_PASSWORD=$(php -r "echo json_decode(base64_decode(getenv('PLATFORM_RELATIONSHIPS')), true)['database'][0]['password'];")
+export DATABASE_DB=$(php -r "echo json_decode(base64_decode(getenv('PLATFORM_RELATIONSHIPS')), true)['database'][0]['path'];")

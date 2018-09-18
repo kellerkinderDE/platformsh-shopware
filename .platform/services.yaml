@@ -1,0 +1,11 @@
+mysqldb:
+    type: mysql:10.0
+    disk: 2048
+    configuration:
+      schemas:
+        - main
+      endpoints:
+        admin:
+          default_schema: main
+          privileges:
+            main: admin
