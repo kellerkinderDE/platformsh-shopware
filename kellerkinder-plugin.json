@@ -3,6 +3,10 @@
     {
       "name": "FroshProfiler",
       "zip_url": "https://github.com/FriendsOfShopware/FroshProfiler/releases/download/1.3.3/FroshProfiler-1.3.3.zip"
+    },
+    {
+      "name": "MyAdditionalPlugin",
+      "clone_url": "git@github.com/my-organization/MyPlugin.git"
     }
   ]
 }
