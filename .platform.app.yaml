@@ -65,4 +65,12 @@ hooks:
         php /app/persistent/shopware/bin/console k10r:plugin:install --activate SwagDemoDataDE
     fi
 
+    if [ "$MEDIA_ARCHIVE" != "" ]; then
+        curl $MEDIA_ARCHIVE -s -S -o /app/persistent/media.zip
+        unzip -d /app/persistent/media-tmp /app/persistent/media.zip > /dev/null || exit 1
+        rm /app/persistent/media.zip
+        rsync -r /app/persistent/media-tmp /app/persistent/shopware > /dev/null
+        rm -r /app/persistent/media-tmp
+    fi 
+
     php /app/persistent/shopware/bin/console k10r:store:update --secure=1 --host="$SERVER_DOMAIN"
