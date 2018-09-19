@@ -6,7 +6,7 @@
     },
     {
       "name": "MyAdditionalPlugin",
-      "clone_url": "git@github.com/my-organization/MyPlugin.git"
+      "clone_url": "https://github.com/my-organization/MyPlugin.git"
     }
   ]
 }
