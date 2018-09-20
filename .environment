@@ -8,6 +8,7 @@ export USE_DEMO=1
 #export PLUGIN_NAME="MyPlugin"
 # Use the next line if you are testing a shop with the Shopware root in "web/"
 #export PROJECT_ROOT="web"
+export MEDIA_ARCHIVE=""
 
 export DATABASE_HOST=$(php -r "echo json_decode(base64_decode(getenv('PLATFORM_RELATIONSHIPS')), true)['database'][0]['host'];")
 export DATABASE_USER=$(php -r "echo json_decode(base64_decode(getenv('PLATFORM_RELATIONSHIPS')), true)['database'][0]['username'];")

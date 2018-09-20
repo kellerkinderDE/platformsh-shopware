@@ -23,6 +23,13 @@ If your plugin project requires additional plugins as a dependency - maybe you'r
 
 Use `zip_url` or `clone_url` respectively. Please note that all URLs have to be publicly reachable. If you require authentication, add it to the URL.
 
+### Media
+
+If you're using real product data for your platform.sh environment you can specify an URL to a media ZIP archive in `.environment`. 
+The archive will be downloaded for every deployment and unpacked in the shopware root directory. Therefor the archive has to contain the `media` directory with its subdirectories and files. 
+
+Please note, your platform.sh project needs sufficient storage because of the additional space requirement of the archive and the unpacked media files.
+
 ## License
 
 Distributed under the MIT license. See `LICENSE` for more information.
