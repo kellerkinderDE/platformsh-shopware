@@ -25,7 +25,7 @@ Use `zip_url` or `clone_url` respectively. Please note that all URLs have to be 
 
 ### Media
 
-If you're using real live data for your platform.sh environment you can specify an URL to a media zip archive in `.environment`. 
+If you're using real product data for your platform.sh environment you can specify an URL to a media ZIP archive in `.environment`. 
 The archive will be downloaded for every deployment and unpacked in the shopware root directory. Therefor the archive has to contain the `media` directory with its subdirectories and files. 
 
 Please note, your platform.sh project needs sufficient storage because of the additional space requirement of the archive and the unpacked media files.
