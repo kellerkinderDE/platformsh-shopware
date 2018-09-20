@@ -66,7 +66,7 @@ hooks:
     fi
 
     if [ "$MEDIA_ARCHIVE" != "" ]; then
-        curl $MEDIA_ARCHIVE -s -S -o /app/persistent/media.zip
+        curl "$MEDIA_ARCHIVE" -s -S -o /app/persistent/media.zip
         unzip -d /app/persistent/media-tmp /app/persistent/media.zip > /dev/null || exit 1
         rm /app/persistent/media.zip
         rsync -r /app/persistent/media-tmp /app/persistent/shopware > /dev/null
