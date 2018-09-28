@@ -1,0 +1,2 @@
+s/);/"es"=>["enabled"=>true,"number_of_replicas"=>null,"number_of_shards"=>null,"client"=>["hosts"=>[$relationships["elasticsearch"][0]["host"].":".$relationships["elasticsearch"][0]["port"]]]]);/g
+s/return/$relationships = json_decode(base64_decode(getenv('PLATFORM_RELATIONSHIPS')), true);return/g

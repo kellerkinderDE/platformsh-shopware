@@ -12,6 +12,7 @@ runtime:
       - zip
 relationships:
     database: 'mysqldb:admin'
+    # elasticsearch: 'search:elasticsearch'
 web:
   locations:
     '/':
@@ -53,7 +54,7 @@ hooks:
     curl https://raw.githubusercontent.com/kellerkinderDE/K10rPlugin/master/kellerinder-plugin.php -s -S -o /app/persistent/kellerkinder-plugin.php
     find /app/persistent/shopware/custom/plugins -type f -name kellerkinder-plugin.json -exec php /app/persistent/kellerkinder-plugin.php {} '/app/persistent/shopware/custom/plugins' \;
 
-    find /app/persistent/shopware/custom/plugins -maxdepth 2  -type f -name composer.json -execdir composer install \;
+    find /app/persistent/shopware/custom/plugins -maxdepth 2  -type f -name composer.json -execdir composer install --no-dev \;
 
     composer -d=/app/persistent/shopware require --no-ansi --no-interaction --update-no-dev --prefer-dist --quiet --optimize-autoloader k10r/deployment:~1.2.0
     php /app/persistent/shopware/bin/console sw:plugin:refresh
@@ -74,3 +75,11 @@ hooks:
     fi 
 
     php /app/persistent/shopware/bin/console k10r:store:update --secure=1 --host="$SERVER_DOMAIN"
+    php /app/persistent/shopware/bin/console sw:theme:cache:generate
+
+    if [ $USE_ELASTICSEARCH -ne "0" ]; then
+        if ! grep -q '"es"' /app/persistent/shopware/config.php; then
+            sed -i -f /app/elasticsearch.sed /app/persistent/shopware/config.php
+        fi
+        php /app/persistent/shopware/bin/console sw:es:index:populate
+    fi
