@@ -32,7 +32,7 @@ Please note, your platform.sh project needs sufficient storage because of the ad
 
 ### Elasticsearch / Enterprise Search
 
-You can use and test your shop with Elasticsearch simply by uncommenting the neccessary parts in `.platform.app.yaml` (add the relationship) and `.platform/services.yaml` (add the service). Also change `USE_ELASTICSEARCH` to 1 in `.environment` and you're ready to go.
+You can use and test your shop with Elasticsearch simply by uncommenting the necessary parts in `.platform.app.yaml` (add the relationship) and `.platform/services.yaml` (add the service). Also change `USE_ELASTICSEARCH` to `1` in `.environment` and you're ready to go.
 
 This also works with the Enterprise Search plugin.
 
