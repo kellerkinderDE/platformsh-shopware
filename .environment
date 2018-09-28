@@ -4,6 +4,7 @@ export SHOP_LOCALE=de_DE
 export ADMIN_EMAIL=me@example.com
 export SHOP_NAME="My platform.sh Shopware"
 export USE_DEMO=1
+export USE_ELASTICSEARCH=0
 # Use the next line if you are testing a plugin
 #export PLUGIN_NAME="MyPlugin"
 # Use the next line if you are testing a shop with the Shopware root in "web/"

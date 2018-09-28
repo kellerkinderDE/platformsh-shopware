@@ -9,3 +9,6 @@ mysqldb:
           default_schema: main
           privileges:
             main: admin
+#search:
+#    type: elasticsearch:5.2
+#    disk: 1024
